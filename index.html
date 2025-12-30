@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veronica Tampieri | Horticulture Specialist</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Nunito+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- CSS VARIABLES: DARK & COZY THEME --- */
+        :root {
+            /* Palette: Deep Forest, Charcoal, Warm Earth */
+            --bg-main: #1a1c1a;       /* Very dark green/grey background */
+            --bg-card: #262b26;       /* Slightly lighter card background */
+            --primary-green: #7d9c74; /* Muted Sage Green for accents */
+            --text-main: #e8e6e1;     /* Light cream text */
+            --text-muted: #b0b3b0;    /* Grey text */
+            --accent-terracotta: #d68c70; /* Warm terracotta */
+            --border-radius: 16px;
+            --shadow: 0 10px 30px rgba(0,0,0,0.4); /* Stronger shadow for dark mode */
+        }
+
+        /* --- SMOOTH SCROLLING --- */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.7;
+        }
+
+        h1, h2, h3, h4 { font-family: 'Lora', serif; color: var(--text-main); }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+
+        /* --- HEADER --- */
+        header {
+            background-color: var(--bg-card);
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            border-bottom: 1px solid #333;
+        }
+
+        .logo { font-size: 1.5rem; font-weight: 600; font-family: 'Lora', serif; color: var(--primary-green); }
+        nav ul { display: flex; gap: 2rem; }
+        nav a { font-weight: 600; font-size: 0.95rem; opacity: 0.8; }
+        nav a:hover { color: var(--accent-terracotta); opacity: 1; }
+
+        /* Language Switcher */
+        .lang-switch button {
+            background: none;
+            border: 1px solid var(--primary-green);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            color: var(--primary-green);
+            transition: all 0.3s ease;
+        }
+        .lang-switch button.active, .lang-switch button:hover {
+            background-color: var(--primary-green);
+            color: var(--bg-main);
+            font-weight: bold;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            padding: 6rem 5%;
+            text-align: center;
+            /* Dark gradient background */
+            background: linear-gradient(135deg, #121412 0%, #1a1c1a 100%);
+            min-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* WIDE PROFILE PICTURE */
+        .profile-img {
+            width: 100%;
+            max-width: 800px;  /* Much wider */
+            height: 400px;     /* Fixed height to crop top/bottom */
+            border-radius: 24px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: var(--shadow);
+            margin-bottom: 2.5rem;
+            
+            background-image: url('images/profile.JPG');
+            background-size: cover;
+            /* Centers the image vertically so we see the face, crops top/bottom */
+            background-position: center 30%; 
+        }
+
+        .hero h1 { font-size: 3.5rem; margin-bottom: 0.5rem; letter-spacing: 1px; }
+        .hero p { font-size: 1.3rem; color: var(--text-muted); max-width: 600px; margin-bottom: 2.5rem; }
+
+        .btn {
+            background-color: var(--accent-terracotta);
+            color: var(--bg-main);
+            padding: 1rem 2.5rem;
+            border-radius: 30px;
+            font-weight: 700;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(214, 140, 112, 0.2);
+        }
+        .btn:hover { background-color: #e8a58a; transform: translateY(-2px); }
+
+        /* --- SECTIONS COMMON --- */
+        section { padding: 5rem 10%; }
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+            font-size: 2.2rem;
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background-color: var(--primary-green);
+            margin: 15px auto 0;
+            opacity: 0.7;
+        }
+
+        /* --- ABOUT --- */
+        #about { background-color: var(--bg-card); }
+
+        /* --- EXPERIENCE (Split Layout) --- */
+        /* Container for the 2-column layout */
+        .experience-container {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr; /* Text gets slightly more space */
+            gap: 3rem;
+            align-items: start;
+        }
+
+        /* The timeline column */
+        .resume-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .resume-item {
+            background: rgba(255,255,255,0.03); /* Very subtle overlay */
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--accent-terracotta);
+            transition: transform 0.2s;
+        }
+        .resume-item:hover { background: rgba(255,255,255,0.05); }
+
+        .resume-date { font-weight: 700; color: var(--primary-green); font-size: 0.9rem; margin-bottom: 0.5rem; display: block; letter-spacing: 1px; }
+        .resume-role { font-size: 1.3rem; margin-bottom: 0.3rem; color: #fff; }
+        .resume-company { font-weight: 600; color: var(--text-muted); margin-bottom: 1rem; display: block; font-size: 0.95rem; }
+        .resume-desc { font-size: 0.95rem; color: #ccc; }
+
+        /* The Image Side (Wageningen) */
+        .experience-image {
+            position: sticky; /* Keeps it in view while scrolling */
+            top: 100px;
+            height: 600px;
+            border-radius: var(--border-radius);
+            background-image: url('images/wageningen.JPG');
+            background-size: cover;
+            background-position: center;
+            box-shadow: var(--shadow);
+            opacity: 0.9;
+        }
+
+        /* --- PASSIONS (HOBBIES) --- */
+        .hobbies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+        }
+        .hobby-card {
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .hobby-card:hover { transform: translateY(-8px); }
+
+        .hobby-img {
+            /* INCREASED HEIGHT TO SEE FACE */
+            height: 450px; 
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .img-incense { background-image: url('images/incense.JPG'); }
+        .img-seeds   { background-image: url('images/travel.JPG'); } 
+
+        .hobby-content { padding: 2.5rem; }
+        .hobby-content h3 { color: var(--accent-terracotta); margin-bottom: 1rem; }
+
+        /* --- CONTACT --- */
+        #contact { padding-bottom: 5rem; }
+        .contact-box {
+            background-color: #2a302a; /* Slightly greener dark box */
+            color: white;
+            padding: 4rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            border: 1px solid var(--primary-green);
+        }
+        .contact-box a { color: var(--accent-terracotta); font-weight: bold; border-bottom: 1px solid transparent; transition: 0.3s;}
+        .contact-box a:hover { border-bottom: 1px solid var(--accent-terracotta); }
+
+        footer { text-align: center; padding: 2rem; background-color: #111; color: var(--text-muted); font-size: 0.85rem; }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 900px) {
+            .experience-container {
+                grid-template-columns: 1fr; /* Stack them */
+            }
+            .experience-image {
+                position: static; /* No sticky on mobile */
+                height: 300px;
+                order: -1; /* Put image above text on mobile? Or remove order to put below. Let's keep it below by default. */
+                margin-bottom: 2rem;
+            }
+            .profile-img { height: 300px; }
+        }
+
+        @media (max-width: 768px) {
+            header { flex-direction: column; gap: 1rem; }
+            .hero h1 { font-size: 2.2rem; }
+            section { padding: 3rem 5%; }
+            .hobby-img { height: 300px; } /* Smaller images on mobile */
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">VT.</div>
+        <nav>
+            <ul>
+                <li><a href="#about" class="lang" data-key="nav_about">About</a></li>
+                <li><a href="#experience" class="lang" data-key="nav_exp">Experience</a></li>
+                <li><a href="#passions" class="lang" data-key="nav_passions">Passions</a></li>
+                <li><a href="#contact" class="lang" data-key="nav_contact">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="lang-switch">
+            <button onclick="setLanguage('en')" class="active">EN</button>
+            <button onclick="setLanguage('it')">IT</button>
+            <button onclick="setLanguage('nl')">NL</button>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="profile-img"></div>
+        <h1>Veronica Tampieri</h1>
+        <p class="lang" data-key="hero_tagline">MSc Plant Sciences • Greenhouse Horticulture Specialist</p>
+        <a href="#contact" class="btn lang" data-key="hero_btn">Get in Touch</a>
+    </section>
+
+    <section id="about">
+        <h2 class="section-title lang" data-key="about_title">About Me</h2>
+        <div style="max-width: 700px; margin: 0 auto; text-align: center;">
+            <p class="lang" data-key="about_text" style="font-size: 1.1rem; opacity: 0.9;">
+                Specialized in Greenhouse Horticulture with a focus on plant physiology in controlled environments. 
+                My background spans from Vertical Farming research in the Netherlands to herbal consultancy in Italy.
+                I am passionate about sustainable crop productivity, data analysis (Python/GenStat), and exploring ethnobotany.
+            </p>
+            <br>
+            <p style="font-size: 0.95rem; color: var(--primary-green); margin-top: 1rem;">
+                <strong class="lang" data-key="skills_title">Key Skills:</strong> 
+                Python, GenStat, Data Analysis, Plant Physiology, Vertical Farming.
+            </p>
+        </div>
+    </section>
+
+    <section id="experience">
+        <h2 class="section-title lang" data-key="exp_title">Experience & Education</h2>
+        
+        <div class="experience-container">
+            
+            <div class="resume-grid">
+                <div class="resume-item">
+                    <span class="resume-date">2025</span>
+                    <h3 class="resume-role lang" data-key="role_delphy">Intern Researcher</h3>
+                    <span class="resume-company">Delphy Improvement Center, Bleiswijk (NL)</span>
+                    <p class="resume-desc lang" data-key="desc_delphy">
+                        MSc internship within the FieldLab Vertical Farming project. Optimized cultivation of leafy greens/herbs. 
+                        Conducted research on tomato, cucumber, and soft fruits. Design of trials, crop management, and statistical data analysis.
+                    </p>
+                </div>
+                <div class="resume-item">
+                    <span class="resume-date">2023 - 2025</span>
+                    <h3 class="resume-role lang" data-key="edu_wur">MSc Plant Sciences</h3>
+                    <span class="resume-company">Wageningen University & Research (NL)</span>
+                    <p class="resume-desc lang" data-key="desc_wur">
+                        Specialization in Greenhouse Horticulture. Advanced study of PFALs, plant physiology, and climate control.
+                        Thesis on electrical conductivity (EC) levels in hydroponic Thai basil.
+                    </p>
+                </div>
+                <div class="resume-item">
+                    <span class="resume-date">2019 - 2023</span>
+                    <h3 class="resume-role lang" data-key="role_minardi">Sales Office & Herbal Consultant</h3>
+                    <span class="resume-company">A. Minardi e Figli s.r.l., Bagnacavallo (IT)</span>
+                    <p class="resume-desc lang" data-key="desc_minardi">
+                        Customer consultancy on herbal properties, scientific research support for pharmaceutical companies, and management of shipments/invoicing.
+                    </p>
+                </div>
+                <div class="resume-item">
+                    <span class="resume-date">2015 - 2019</span>
+                    <h3 class="resume-role lang" data-key="edu_unibo">BSc Applied Pharmaceutical Sciences</h3>
+                    <span class="resume-company">University of Bologna (IT)</span>
+                    <p class="resume-desc lang" data-key="desc_unibo">
+                        Specialization in Herbal Techniques. Study of secondary metabolites and extraction methodologies.
+                        Graduated 110/110 cum laude.
+                    </p>
+                </div>
+            </div>
+
+            <div class="experience-image"></div>
+            
+        </div>
+    </section>
+
+    <section id="passions" style="background-color: var(--bg-card);">
+        <h2 class="section-title lang" data-key="passions_title">Curiosities & Passions</h2>
+        <div class="hobbies-grid">
+            
+            <div class="hobby-card">
+                <div class="hobby-img img-incense"></div>
+                <div class="hobby-content">
+                    <h3 class="lang" data-key="incense_title">Natural Incense</h3>
+                    <p class="lang" data-key="incense_desc">
+                        I create homemade natural incense blending traditional knowledge with my botanical background. 
+                        Available upon request for those who appreciate natural fragrances.
+                    </p>
+                </div>
+            </div>
+
+            <div class="hobby-card">
+                <div class="hobby-img img-seeds"></div>
+                <div class="hobby-content">
+                    <h3 class="lang" data-key="seeds_title">Seed Catalogue</h3>
+                    <p class="lang" data-key="seeds_desc">
+                        I am a true seed lover. I love hiking and traveling, always looking to collect new seeds to expand my collection.
+                        I maintain my own catalogue from my agronomic experiments and travels. Always happy to swap!
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="contact-box">
+            <h2 class="lang" data-key="contact_title">Let's Connect</h2>
+            <p class="lang" data-key="contact_desc">Open to opportunities in Agricultural Research and Development.</p>
+            <br>
+            <p><strong>Email:</strong> <a href="mailto:veronica.tampieri@gmail.com">veronica.tampieri@gmail.com</a></p>
+            <p><strong>Phone:</strong> +39 331 2185221</p>
+            <p><strong>Location:</strong> Cotignola, Ravenna (Italy)</p>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Veronica Tampieri. Designed with a passion for plants.</p>
+    </footer>
+
+    <script>
+        const translations = {
+            en: {
+                nav_about: "About",
+                nav_exp: "Experience",
+                nav_passions: "Passions",
+                nav_contact: "Contact",
+                hero_tagline: "MSc Plant Sciences • Greenhouse Horticulture Specialist",
+                hero_btn: "Get in Touch",
+                about_title: "About Me",
+                about_text: "Specialized in Greenhouse Horticulture with a focus on plant physiology in controlled environments. My background spans from Vertical Farming research in the Netherlands to herbal consultancy in Italy. I am passionate about sustainable crop productivity, data analysis (Python/GenStat), and exploring ethnobotany.",
+                skills_title: "Key Skills:",
+                exp_title: "Experience & Education",
+                role_delphy: "Intern Researcher",
+                desc_delphy: "MSc internship within the FieldLab Vertical Farming project. Optimized cultivation of leafy greens/herbs. Conducted research on tomato, cucumber, and soft fruits. Design of trials, crop management, and statistical data analysis.",
+                edu_wur: "MSc Plant Sciences",
+                desc_wur: "Specialization in Greenhouse Horticulture. Advanced study of PFALs, plant physiology, and climate control. Thesis on electrical conductivity (EC) levels in hydroponic Thai basil.",
+                role_minardi: "Sales Office & Herbal Consultant",
+                desc_minardi: "Customer consultancy on herbal properties, scientific research support for pharmaceutical companies, and management of shipments/invoicing.",
+                edu_unibo: "BSc Applied Pharmaceutical Sciences",
+                desc_unibo: "Specialization in Herbal Techniques. Study of secondary metabolites and extraction methodologies. Graduated 110/110 cum laude.",
+                passions_title: "Curiosities & Passions",
+                incense_title: "Natural Incense",
+                incense_desc: "I create homemade natural incense blending traditional knowledge with my botanical background. Available upon request for those who appreciate natural fragrances.",
+                seeds_title: "Seed Catalogue",
+                seeds_desc: "I am a true seed lover. I love hiking and traveling, always looking to collect new seeds to expand my collection. I maintain my own catalogue from my agronomic experiments and travels. Always happy to swap!",
+                contact_title: "Let's Connect",
+                contact_desc: "Open to opportunities in Agricultural Research and Development."
+            },
+            it: {
+                nav_about: "Chi Sono",
+                nav_exp: "Esperienza",
+                nav_passions: "Passioni",
+                nav_contact: "Contatti",
+                hero_tagline: "MSc Plant Sciences • Specialista in Orticoltura in Serra",
+                hero_btn: "Contattami",
+                about_title: "Chi Sono",
+                about_text: "Specializzata in orticoltura in serra con focus sulla fisiologia vegetale in ambienti controllati. Il mio percorso spazia dalla ricerca sul Vertical Farming nei Paesi Bassi alla consulenza erboristica in Italia. Appassionata di produttività sostenibile, analisi dati (Python/GenStat) ed etnobotanica.",
+                skills_title: "Competenze:",
+                exp_title: "Esperienza e Formazione",
+                role_delphy: "Stagista Ricercatore",
+                desc_delphy: "Tirocinio MSc nel progetto FieldLab Vertical Farming. Ottimizzazione della coltivazione di ortaggi a foglia ed erbe. Supporto alla ricerca su pomodoro, cetriolo e frutti di bosco. Design dei trial, gestione colturale e analisi statistica.",
+                edu_wur: "MSc Plant Sciences",
+                desc_wur: "Specializzazione in Orticoltura in Serra. Studio avanzato di PFALs, fisiologia vegetale e controllo climatico. Tesi sui livelli di conducibilità elettrica (EC) nel basilico thailandese idroponico.",
+                role_minardi: "Impiegata Ufficio Vendite & Consulenza",
+                desc_minardi: "Consulenza clienti sulle proprietà delle erbe, supporto alla ricerca scientifica per aziende farmaceutiche e gestione di spedizioni/fatturazione.",
+                edu_unibo: "Laurea Triennale in Scienze Farmaceutiche Applicate",
+                desc_unibo: "Specializzazione in Tecniche Erboristiche. Studio dei metaboliti secondari e metodologie di estrazione. Laurea 110/110 con lode.",
+                passions_title: "Curiosità e Passioni",
+                incense_title: "Incensi Naturali",
+                incense_desc: "Produco incensi naturali fatti in casa unendo conoscenze tradizionali e background botanico. Disponibili su richiesta.",
+                seeds_title: "Catalogo Semi",
+                seeds_desc: "Sono una vera amante dei semi. Amo fare trekking e viaggiare per raccogliere nuovi semi. Mantengo un catalogo personale dai miei esperimenti e viaggi. Felice di scambiare!",
+                contact_title: "Contattami",
+                contact_desc: "Aperta a opportunità in Ricerca e Sviluppo in ambito agricolo."
+            },
+            nl: {
+                nav_about: "Over Mij",
+                nav_exp: "Ervaring",
+                nav_passions: "Passies",
+                nav_contact: "Contact",
+                hero_tagline: "MSc Plant Sciences • Specialist Glastuinbouw",
+                hero_btn: "Contact Opnemen",
+                about_title: "Over Mij",
+                about_text: "Gespecialiseerd in glastuinbouw met een focus op plantfysiologie in gecontroleerde omgevingen. Mijn achtergrond reikt van Vertical Farming onderzoek in Nederland tot kruidenconsultancy in Italië. Gepassioneerd door duurzame gewasproductiviteit, data-analyse (Python/GenStat) en etnobotanie.",
+                skills_title: "Vaardigheden:",
+                exp_title: "Ervaring & Opleiding",
+                role_delphy: "Onderzoeksstagiair",
+                desc_delphy: "MSc-stage binnen het FieldLab Vertical Farming project. Optimalisatie van de teelt van bladgroenten/kruiden. Onderzoek naar tomaat, komkommer en zachtfruit. Proefopzet, gewasbeheer en statistische data-analyse.",
+                edu_wur: "MSc Plant Sciences",
+                desc_wur: "Specialisatie in Glastuinbouw. Geavanceerde studie van PFALs, plantfysiologie en klimaatbeheersing. Thesis over elektrische geleidbaarheid (EC) in hydrocultuur Thaise basilicum.",
+                role_minardi: "Sales & Kruidenconsultant",
+                desc_minardi: "Klantadvies over kruideneigenschappen, wetenschappelijke gebruikersondersteuning en beheer van verzendingen/facturatie.",
+                edu_unibo: "BSc Applied Pharmaceutical Sciences",
+                desc_unibo: "Specialisatie in Kruidentechnieken. Studie van secundaire metabolieten en extractiemethoden. Cum laude afgestudeerd.",
+                passions_title: "Passies & Projecten",
+                incense_title: "Natuurlijke Wierook",
+                incense_desc: "Ik maak zelfgemaakte natuurlijke wierook, waarbij ik traditionele kennis combineer met mijn botanische achtergrond. Beschikbaar op aanvraag.",
+                seeds_title: "Zadencatalogus",
+                seeds_desc: "Ik ben een echte zadenliefhebber. Ik hou van wandelen en reizen om nieuwe zaden te verzamelen. Ik beheer mijn eigen catalogus. Ik deel en ruil graag zaden!",
+                contact_title: "Contact",
+                contact_desc: "Beschikbaar voor functies in Agrarisch Onderzoek en Ontwikkeling."
+            }
+        };
+
+        function setLanguage(lang) {
+            document.querySelectorAll('.lang').forEach(el => {
+                const key = el.getAttribute('data-key');
+                if (translations[lang][key]) el.textContent = translations[lang][key];
+            });
+            document.querySelectorAll('.lang-switch button').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.lang-switch button[onclick="setLanguage('${lang}')"]`).classList.add('active');
+        }
+    </script>
+</body>
+</html>
