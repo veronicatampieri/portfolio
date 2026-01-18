@@ -134,6 +134,22 @@
             transform: translateY(-3px); 
         }
 
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--accent-terracotta);
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-block;
+            border: 2px solid var(--accent-terracotta);
+        }
+        .btn-secondary:hover { 
+            background-color: var(--accent-terracotta);
+            color: var(--bg-main); 
+            transform: translateY(-3px); 
+        }
+
         /* --- SECTIONS COMMON --- */
         section { padding: 5rem 10%; }
         .section-title {
@@ -154,6 +170,73 @@
 
         /* --- ABOUT --- */
         #about { background-color: var(--bg-card); }
+
+        /* --- BLOG PREVIEW SECTION --- */
+        #blog-preview {
+            background-color: var(--bg-main);
+        }
+
+        .blog-preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .blog-preview-card {
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+            border: 1px solid rgba(255,255,255,0.05);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .blog-preview-card:hover { transform: translateY(-8px); }
+
+        .blog-preview-img {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .img-prebreeding { background-image: url('images/blog-prebreeding.jpg'); background-position: center 30%; }
+        /* Add more images for future articles */
+
+        .blog-preview-content {
+            padding: 2rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blog-preview-content h3 {
+            color: var(--accent-terracotta);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .blog-preview-content p {
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        .blog-meta {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .view-all-blog {
+            text-align: center;
+            margin-top: 2rem;
+        }
 
         /* --- EXPERIENCE --- */
         .experience-container {
@@ -246,16 +329,18 @@
             .hero h1 { font-size: 2.5rem; }
             section { padding: 3rem 5%; }
             .hobby-img { height: 300px; }
+            .blog-preview-img { height: 180px; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">VT.</div>
+        <a href="index.html" class="logo">VT.</a>
         <nav>
             <ul>
                 <li><a href="#about" class="lang" data-key="nav_about">About</a></li>
+                <li><a href="#blog-preview" class="lang" data-key="nav_blog">Blog</a></li>
                 <li><a href="#experience" class="lang" data-key="nav_exp">Experience</a></li>
                 <li><a href="#passions" class="lang" data-key="nav_passions">Passions</a></li>
                 <li><a href="#contact" class="lang" data-key="nav_contact">Contact</a></li>
@@ -286,6 +371,71 @@
                 <strong class="lang" data-key="skills_title">Key Skills:</strong> 
                 Python, GenStat, Data Analysis, Plant Physiology, Vertical Farming.
             </p>
+        </div>
+    </section>
+
+    <section id="blog-preview">
+        <h2 class="section-title lang" data-key="blog_title">Latest Articles</h2>
+        
+        <div class="blog-preview-grid">
+            <!-- Article 1: Pre-breeding -->
+            <div class="blog-preview-card">
+                <div class="blog-preview-img img-prebreeding"></div>
+                <div class="blog-preview-content">
+                    <div class="blog-meta">
+                        <span class="lang" data-key="blog_category">Plant Science</span>
+                        <span>•</span>
+                        <span>January 2026</span>
+                    </div>
+                    <h3 class="lang" data-key="blog_prebreeding_title">Pre-breeding: Transforming Biodiversity into Innovation</h3>
+                    <p class="lang" data-key="blog_prebreeding_excerpt">
+                        Where does innovation truly come from in crop genetic improvement? Discover how pre-breeding acts as an essential bridge between genetic resources and commercial breeding, transforming plant biodiversity into resilient solutions for future agriculture.
+                    </p>
+                    <a href="blog.html#prebreeding" class="btn-secondary lang" data-key="blog_read_more">Read Full Article →</a>
+                </div>
+            </div>
+
+            <!-- Article 2: Coming Soon -->
+            <div class="blog-preview-card">
+                <div class="blog-preview-img" style="background-color: var(--primary-green); display: flex; align-items: center; justify-content: center;">
+                    <div style="color: var(--bg-main); font-size: 4rem; opacity: 0.7;">🌱</div>
+                </div>
+                <div class="blog-preview-content">
+                    <div class="blog-meta">
+                        <span class="lang" data-key="blog_upcoming">Upcoming</span>
+                        <span>•</span>
+                        <span>Soon</span>
+                    </div>
+                    <h3 class="lang" data-key="blog_next_title">Seed Systems & Genetic Resources</h3>
+                    <p class="lang" data-key="blog_next_excerpt">
+                        Exploring the critical role of seed conservation, exchange, and genetic resource management in building climate-resilient agriculture. From gene banks to farmer-led initiatives.
+                    </p>
+                    <span class="btn-secondary" style="opacity: 0.6; cursor: default;">Coming Soon</span>
+                </div>
+            </div>
+
+            <!-- Article 3: Coming Soon -->
+            <div class="blog-preview-card">
+                <div class="blog-preview-img" style="background-color: var(--accent-terracotta); display: flex; align-items: center; justify-content: center;">
+                    <div style="color: var(--bg-main); font-size: 4rem; opacity: 0.7;">🔬</div>
+                </div>
+                <div class="blog-preview-content">
+                    <div class="blog-meta">
+                        <span class="lang" data-key="blog_upcoming">Upcoming</span>
+                        <span>•</span>
+                        <span>Soon</span>
+                    </div>
+                    <h3 class="lang" data-key="blog_physiology_title">Plant Physiology in Controlled Environments</h3>
+                    <p class="lang" data-key="blog_physiology_excerpt">
+                        How plant physiology principles guide optimization in greenhouse and vertical farming systems. From photoperiod management to stress physiology in PFAL systems.
+                    </p>
+                    <span class="btn-secondary" style="opacity: 0.6; cursor: default;">Coming Soon</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="view-all-blog">
+            <a href="blog.html" class="btn lang" data-key="blog_view_all">View All Articles</a>
         </div>
     </section>
 
@@ -386,6 +536,9 @@
             <p class="lang" data-key="contact_desc">Open to opportunities in Agricultural Research and Development.</p>
             <br>
             <p><strong>Email:</strong> <a href="mailto:veronica.tampieri@gmail.com">veronica.tampieri@gmail.com</a></p>
+            <p style="margin-top: 1rem;"><strong>Follow my work:</strong> 
+                <a href="blog.html" style="color: var(--primary-green);">Blog</a>
+            </p>
         </div>
     </section>
 
@@ -397,6 +550,7 @@
         const translations = {
             en: {
                 nav_about: "About",
+                nav_blog: "Blog",
                 nav_exp: "Experience",
                 nav_passions: "Passions",
                 nav_contact: "Contact",
@@ -405,6 +559,17 @@
                 about_title: "About Me",
                 about_text: "Specialized in Greenhouse Horticulture with a focus on plant physiology in controlled environments. My background spans from Vertical Farming research in the Netherlands to herbal consultancy in Italy. I am passionate about sustainable crop productivity, data analysis (Python/GenStat), and exploring ethnobotany.",
                 skills_title: "Key Skills:",
+                blog_title: "Latest Articles",
+                blog_category: "Plant Science",
+                blog_upcoming: "Upcoming",
+                blog_prebreeding_title: "Pre-breeding: Transforming Biodiversity into Innovation",
+                blog_prebreeding_excerpt: "Where does innovation truly come from in crop genetic improvement? Discover how pre-breeding acts as an essential bridge between genetic resources and commercial breeding, transforming plant biodiversity into resilient solutions for future agriculture.",
+                blog_next_title: "Seed Systems & Genetic Resources",
+                blog_next_excerpt: "Exploring the critical role of seed conservation, exchange, and genetic resource management in building climate-resilient agriculture. From gene banks to farmer-led initiatives.",
+                blog_physiology_title: "Plant Physiology in Controlled Environments",
+                blog_physiology_excerpt: "How plant physiology principles guide optimization in greenhouse and vertical farming systems. From photoperiod management to stress physiology in PFAL systems.",
+                blog_read_more: "Read Full Article →",
+                blog_view_all: "View All Articles",
                 exp_title: "Experience & Education",
                 course_fao: "Introduction to Pre-breeding",
                 desc_fao: "Completed specialized training on pre-breeding fundamentals and its applications in plant genetic resources. The course covered optimal use of genetic diversity, criteria for implementing pre-breeding programs, and essential plant biology and genetics concepts for successful genetic resource management and crop improvement strategies.",
@@ -420,12 +585,13 @@
                 incense_title: "Natural Incense",
                 incense_desc: "I create homemade natural incense blending traditional knowledge with my botanical background. Available upon request for those who appreciate natural fragrances.",
                 seeds_title: "Seed Catalogue",
-                seeds_desc: "I am a true seed lover. I love hiking and traveling, always looking to collect new seeds to expand my collection. I maintain my own catalogue from my agronomic experiments and travels. Always happy to swap!",
+                seeds_desc: "As a dedicated seed collector and plant scientist, I combine my love for travel and hiking with field research. I maintain a comprehensive catalog documenting my agronomic experiments and the diverse species I gather during my travels. I am always open to seed exchanges and collaborations.",
                 contact_title: "Let's Connect",
                 contact_desc: "Open to opportunities in Agricultural Research and Development."
             },
             it: {
                 nav_about: "Chi Sono",
+                nav_blog: "Blog",
                 nav_exp: "Esperienza",
                 nav_passions: "Passioni",
                 nav_contact: "Contatti",
@@ -434,6 +600,17 @@
                 about_title: "Chi Sono",
                 about_text: "Specializzata in orticoltura in serra con focus sulla fisiologia vegetale in ambienti controllati. Il mio percorso spazia dalla ricerca sul Vertical Farming nei Paesi Bassi alla consulenza erboristica in Italia. Appassionata di produttività sostenibile, analisi dati (Python/GenStat) ed etnobotanica.",
                 skills_title: "Competenze:",
+                blog_title: "Ultimi Articoli",
+                blog_category: "Scienza Vegetale",
+                blog_upcoming: "Prossimamente",
+                blog_prebreeding_title: "Pre-breeding: Trasformare la Biodiversità in Innovazione",
+                blog_prebreeding_excerpt: "Da dove nasce davvero l'innovazione nel miglioramento genetico delle colture? Scopri come il pre-breeding rappresenti un ponte essenziale tra risorse genetiche e breeding commerciale, trasformando la biodiversità vegetale in soluzioni resilienti per l'agricoltura futura.",
+                blog_next_title: "Sistemi Sementieri & Risorse Genetiche",
+                blog_next_excerpt: "Esplorazione del ruolo cruciale della conservazione, scambio e gestione delle risorse genetiche nella costruzione di un'agricoltura resiliente ai cambiamenti climatici. Dalle banche del germoplasma alle iniziative guidate dagli agricoltori.",
+                blog_physiology_title: "Fisiologia Vegetale in Ambienti Controllati",
+                blog_physiology_excerpt: "Come i principi della fisiologia vegetale guidano l'ottimizzazione nei sistemi di serra e vertical farming. Dalla gestione del fotoperiodo alla fisiologia dello stress nei sistemi PFAL.",
+                blog_read_more: "Leggi l'Articolo Completo →",
+                blog_view_all: "Vedi Tutti gli Articoli",
                 exp_title: "Esperienza e Formazione",
                 course_fao: "Introduzione al Pre-breeding",
                 desc_fao: "Corso di formazione specializzato sui fondamenti del pre-breeding e le sue applicazioni nelle risorse genetiche vegetali. Il corso ha coperto l'uso ottimale della diversità genetica, i criteri per l'implementazione di programmi di pre-breeding e i concetti essenziali di biologia e genetica delle piante per una gestione efficace delle risorse genetiche e strategie di miglioramento delle colture.",

@@ -6,6 +6,7 @@ RUN rm -rf /usr/share/nginx/html/*
 
 # Copy the HTML file
 COPY index.html /usr/share/nginx/html/index.html
+COPY blog.html /usr/share/nginx/html/blog.html
 
 # Copy the images folder (case sensitive!)
 COPY images /usr/share/nginx/html/images

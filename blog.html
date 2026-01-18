@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog • VT.</title>
+    
+    <link rel="icon" type="image/png" href="images/favicon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Nunito+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- CSS VARIABLES (MATCHING INDEX.HTML) --- */
+        :root {
+            --bg-main: #1a1c1a;       
+            --bg-card: #262b26;       
+            --primary-green: #7d9c74; 
+            --text-main: #e8e6e1;     
+            --text-muted: #b0b3b0;    
+            --accent-terracotta: #d68c70; 
+            --border-radius: 16px;
+            --shadow: 0 10px 30px rgba(0,0,0,0.4); 
+        }
+
+        /* --- CRITICAL UX FIX FOR ANCHOR JUMPS --- */
+        html { 
+            scroll-behavior: smooth; 
+            scroll-padding-top: 100px; /* Prevents sticky header from hiding titles */
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.8; /* Slightly increased for reading */
+        }
+
+        h1, h2, h3, h4 { font-family: 'Lora', serif; color: var(--text-main); }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+
+        /* --- HEADER --- */
+        header {
+            background-color: var(--bg-card);
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            border-bottom: 1px solid #333;
+        }
+
+        .logo { font-size: 1.5rem; font-weight: 600; font-family: 'Lora', serif; color: var(--primary-green); }
+        nav ul { display: flex; gap: 2rem; }
+        nav a { font-weight: 600; font-size: 0.95rem; opacity: 0.8; }
+        nav a:hover { color: var(--accent-terracotta); opacity: 1; }
+
+        /* Language Switcher */
+        .lang-switch button {
+            background: none;
+            border: 1px solid var(--primary-green);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            color: var(--primary-green);
+            transition: all 0.3s ease;
+        }
+        .lang-switch button.active, .lang-switch button:hover {
+            background-color: var(--primary-green);
+            color: var(--bg-main);
+            font-weight: bold;
+        }
+
+        /* --- BLOG HERO --- */
+        .blog-hero {
+            background: linear-gradient(rgba(26, 28, 26, 0.8), rgba(26, 28, 26, 0.8)), url('images/blog-prebreeding.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 6rem 10% 4rem;
+            text-align: center;
+            border-bottom: 1px solid #333;
+        }
+
+        .blog-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .blog-hero p {
+            font-size: 1.2rem;
+            color: #ddd;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* --- ARTICLE LIST (GRID) --- */
+        .article-list-section {
+            padding: 4rem 10%;
+            background-color: var(--bg-main);
+        }
+
+        .section-label {
+            text-align: center;
+            color: var(--primary-green);
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .article-card {
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: transform 0.2s, background 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.08);
+            border-color: var(--primary-green);
+        }
+
+        .article-card h3 {
+            color: var(--accent-terracotta);
+            margin-bottom: 0.8rem;
+            font-size: 1.25rem;
+        }
+
+        .article-card p {
+            font-size: 0.95rem;
+            opacity: 0.8;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .article-card-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .read-btn {
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .read-btn:hover { gap: 0.8rem; color: var(--primary-green); }
+
+        /* --- FULL ARTICLE VIEW --- */
+        .full-article-container {
+            background-color: var(--bg-card); /* Slightly lighter than main bg to separate */
+            padding: 5rem 10%;
+            border-top: 1px solid #333;
+        }
+
+        article {
+            max-width: 750px; /* Optimal reading width */
+            margin: 0 auto;
+        }
+
+        .article-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 2rem;
+        }
+
+        .article-meta {
+            color: var(--primary-green);
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .article-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        .article-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            font-weight: 300;
+            font-style: italic;
+        }
+
+        .article-featured-image {
+            width: 100%;
+            height: 400px;
+            background-image: url('images/blog-prebreeding.jpg');
+            background-size: cover;
+            background-position: center;
+            border-radius: var(--border-radius);
+            margin-bottom: 3rem;
+            box-shadow: var(--shadow);
+        }
+
+        /* Typography for the content */
+        .article-content p {
+            margin-bottom: 1.8rem;
+            font-size: 1.15rem; /* Larger text for readability */
+            color: #dcdcdc;
+        }
+
+        .article-content h2 {
+            font-size: 1.8rem;
+            color: var(--accent-terracotta);
+            margin: 3rem 0 1.5rem 0;
+        }
+
+        .article-content ul {
+            margin: 2rem 0;
+            background: rgba(0,0,0,0.2);
+            padding: 2rem 2rem 2rem 3rem;
+            border-radius: var(--border-radius);
+            border-left: 3px solid var(--primary-green);
+        }
+
+        .article-content li {
+            margin-bottom: 1rem;
+            list-style-type: disc;
+            padding-left: 0.5rem;
+        }
+        
+        .article-quote {
+            font-size: 1.4rem;
+            font-family: 'Lora', serif;
+            font-style: italic;
+            color: var(--primary-green);
+            text-align: center;
+            margin: 3rem 0;
+            padding: 0 2rem;
+            line-height: 1.6;
+        }
+
+        /* --- NEW IMAGE LAYOUT STYLES --- */
+        .image-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 2.5rem 0 0.5rem 0;
+        }
+        .image-grid img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .single-image-vertical {
+            display: flex;
+            justify-content: center;
+            margin: 2.5rem 0 0.5rem 0;
+        }
+        .single-image-vertical img {
+            height: 600px;
+            max-width: 100%;
+            width: auto;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: var(--shadow);
+        }
+
+        .caption {
+            display: block;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 2.5rem;
+            margin-top: 0.8rem;
+        }
+
+        @media (max-width: 768px) {
+            .image-grid { grid-template-columns: 1fr; }
+            .image-grid img { height: 250px; }
+            .single-image-vertical img { height: auto; width: 100%; }
+            header { flex-direction: column; gap: 1rem; }
+            .blog-hero h1 { font-size: 2.2rem; }
+            .article-title { font-size: 2rem; }
+            .article-featured-image { height: 250px; }
+            section, .article-list-section, .full-article-container { padding: 3rem 5%; }
+        }
+
+        .back-top-btn {
+            display: block;
+            width: fit-content;
+            margin: 4rem auto 0;
+            padding: 0.8rem 2rem;
+            border: 1px solid var(--text-muted);
+            border-radius: 50px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        .back-top-btn:hover {
+            border-color: var(--primary-green);
+            color: var(--primary-green);
+            background: rgba(125, 156, 116, 0.1);
+        }
+
+        /* --- CONTACT --- */
+        #contact { padding: 5rem 10%; background-color: var(--bg-main); }
+        .contact-box {
+            background-color: var(--bg-card);
+            color: white;
+            padding: 4rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            border: 1px solid var(--primary-green);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .contact-box a { color: var(--accent-terracotta); font-weight: bold; border-bottom: 1px solid transparent; transition: 0.3s;}
+        .contact-box a:hover { border-bottom: 1px solid var(--accent-terracotta); }
+
+        footer { text-align: center; padding: 2rem; background-color: #111; color: var(--text-muted); font-size: 0.85rem; }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">VT.</a>
+        <nav>
+            <ul>
+                <li><a href="index.html#about" class="lang" data-key="nav_about">About</a></li>
+                <li><a href="blog.html" class="lang" data-key="nav_blog" style="color: var(--accent-terracotta); opacity: 1;">Blog</a></li>
+                <li><a href="index.html#experience" class="lang" data-key="nav_exp">Experience</a></li>
+                <li><a href="index.html#passions" class="lang" data-key="nav_passions">Passions</a></li>
+                <li><a href="index.html#contact" class="lang" data-key="nav_contact">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="lang-switch">
+            <button onclick="setLanguage('en')" class="active">EN</button>
+            <button onclick="setLanguage('it')">IT</button>
+        </div>
+    </header>
+
+    <section class="blog-hero">
+        <h1 class="lang" data-key="blog_hero_title">Plant Science Journal</h1>
+        <p class="lang" data-key="blog_hero_subtitle">Personal insights on pre-breeding, physiology, and sustainable systems.</p>
+    </section>
+
+    <section class="article-list-section">
+        <div class="section-label lang" data-key="browse_articles">Browse Articles</div>
+        
+        <div class="articles-grid">
+            <div class="article-card">
+                <div class="article-card-meta">
+                    <span>January 2026</span> • <span style="color: var(--primary-green);">Featured</span>
+                </div>
+                <h3 class="lang" data-key="blog_prebreeding_title">Pre-breeding: Transforming Biodiversity</h3>
+                <p class="lang" data-key="blog_prebreeding_excerpt">
+                    Where does innovation truly come from? How pre-breeding acts as the essential bridge between genebanks and commercial fields.
+                </p>
+                <a href="#prebreeding" class="read-btn lang" data-key="jump_to_article">Read Now ↓</a>
+            </div>
+
+            <div class="article-card" style="opacity: 0.6;">
+                <div class="article-card-meta">
+                    <span class="lang" data-key="blog_upcoming">Upcoming</span>
+                </div>
+                <h3 class="lang" data-key="blog_next_title">Seed Systems & Resources</h3>
+                <p class="lang" data-key="blog_next_excerpt">
+                    The critical role of seed conservation and exchange in building climate-resilient agriculture.
+                </p>
+                <span style="font-size: 0.85rem; color: var(--text-muted);">Coming Soon</span>
+            </div>
+
+            <div class="article-card" style="opacity: 0.6;">
+                <div class="article-card-meta">
+                    <span class="lang" data-key="blog_upcoming">Upcoming</span>
+                </div>
+                <h3 class="lang" data-key="blog_physiology_title">Physiology in Controlled Env.</h3>
+                <p class="lang" data-key="blog_physiology_excerpt">
+                    Optimization in greenhouse and vertical farming systems guided by plant physiology.
+                </p>
+                <span style="font-size: 0.85rem; color: var(--text-muted);">Coming Soon</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="full-article-container" id="prebreeding">
+        <article>
+            <div class="article-header">
+                <span class="article-meta lang" data-key="blog_category">Plant Science • 15 min read</span>
+                <h1 class="article-title lang" data-key="blog_article_title">Pre-breeding: Transforming Biodiversity into Innovation for Future Crops</h1>
+                <p class="article-subtitle lang" data-key="blog_article_subtitle">Bridging genetic resources with commercial breeding for resilient agriculture</p>
+            </div>
+
+            <div class="article-featured-image"></div>
+
+            <div class="article-content">
+                <p class="lang" data-key="pb_1">
+                    In recent years, my academic and personal journey through the horticultural world has often led me to reflect on a seemingly simple question: where does innovation truly come from in crop genetic improvement?
+                </p>
+                
+                <p class="lang" data-key="pb_2">
+                    The answer I've found doesn't concern just new technologies or the increasingly sophisticated molecular tools that I have witnessed during the many excursions to breeding companies, but something deeper and more structural: the ability to identify, evaluate, and make usable plant biodiversity, even when it comes from materials that are poorly or not at all adapted.
+                </p>
+                
+                <p class="lang" data-key="pb_3">
+                    During my Master's in Plant Sciences at Wageningen University & Research, and as I gradually approached the world of applied research and seed production, I understood how pre-breeding represents a key element of this process. An essential bridge, often not very visible, between genebanks, basic research, and commercial breeding programs, but crucial for crop resilience in the long term.
+                </p>
+
+                <p class="lang" data-key="pb_4">
+                    One of the most valuable aspects of this academic journey was the opportunity to gain insight into all these interconnected activities and to learn how to connect different perspectives. I still vividly remember my visit to the Centre for Genetic Resources in Wageningen as part of the Seed science and technology class, a remarkable heritage of more than 24.000 varieties and wild populations of food crops from all over the world, carefully conserved, characterized and made available to anyone for research.
+                </p>
+
+                <div class="image-grid">
+                    <img src="images/wage1.jpg" alt="Visit to Wageningen Centre for Genetic Resources">
+                    <img src="images/wage2.jpg" alt="Visit to Wageningen Centre for Genetic Resources">
+                </div>
+                <span class="caption lang" data-key="cap_1">Visit at the Centre for Genetic Resources at Wageningen University and Research</span>
+
+                <p class="lang" data-key="pb_5">
+                    Equally inspiring were the many conversations with plant breeders from major breeding companies in the Netherlands and Germany. From these discussions I truly realized how the development of new varieties is driven not only by emerging biotic and abiotic stress, but also by the needs of those who stand at the end of the production chain, from people responsible for harvesting and processing to, ultimately, consumers themselves.
+                </p>
+                
+                <h2 class="lang" data-key="sub_1">Why pre-breeding is strategic today</h2>
+                
+                <p class="lang" data-key="pb_6">
+                    Genetic improvement is not a linear process. Rather, it is a continuous flow of genetic recombination, selection, and testing that can be suddenly disrupted by the emergence of new biotic pressures, climate-related challenges, or changing market demands.
+                </p>
+                
+                <p class="lang" data-key="pb_7">
+                    Through conversations with breeders with many years of experience, one idea has emerged very clearly: years of work focused on optimizing yield, quality, and uniformity can be quickly set aside when a new disease appears, forcing breeding programs to restart from resistant genetic sources that are often initially less competitive from an agronomic perspective.
+                </p>
+                
+                <p class="lang" data-key="pb_8">
+                    The introduction of resistance to emerging viruses such as Tomato brown rugose fruit virus (ToBRFV) is a clear example of this dynamic. Today, this pathogen represents a major threat in Dutch glasshouses, requiring strict hygiene protocols and reshaping breeding priorities. In such situations, genetic resistance becomes the primary goal, while productivity and quality are gradually rebuilt through successive cycles of selection and testing.
+                </p>
+
+                <p class="lang" data-key="pb_9">
+                    For this reason, I believe that exploring wild accessions as sources of novel resistance traits is a powerful approach to developing more resilient food crops and strengthening global food security. At the same time, preserving this broad diversity of wild genetic resources is essential to ensure that this variability is not irreversibly lost.
+                </p>
+                
+                <p class="lang" data-key="pb_10">
+                    Although my academic background is not rooted in classical breeding but in plant physiology, one of the aspects that fascinates me most is the direct interaction between genetics, environment, and cultivation practices. I still remember one of my first classes in plant physiology in horticulture, when we discussed what a chimera is, how it forms, and how stable it can be: a perfect example of how mutations in specific meristem layers can give rise to beautifully variegated plants, which may occasionally revert their color in order to restore higher chlorophyll content.
+                </p>
+
+                <div class="image-grid">
+                    <img src="images/arbo1.jpg" alt="Variegated Hosta">
+                    <img src="images/arbo2.jpg" alt="Actinidia">
+                </div>
+                <span class="caption lang" data-key="cap_2">Example of variegated Hosta (left) and Actinidia (right) from the Arboretum de Dreijen in Wageningen.</span>
+
+                <p class="lang" data-key="pb_11">
+                    During my internship as a Research Intern at the Delphy Improvement Centre in the Netherlands, I followed several horticultural crops throughout their entire growth cycle, from trial design and crop monitoring to harvest and data analysis. This experience highlighted several key points:
+                </p>
+                
+                <ul>
+                    <li class="lang" data-key="li_1">The same genotype can express very different phenotypes depending on the environment</li>
+                    <li class="lang" data-key="li_2">Complex traits such as yield, vigor, and stress tolerance cannot be evaluated in isolation</li>
+                    <li class="lang" data-key="li_3">Repeated testing across different environments remains indispensable, even when working with highly homozygous or double-haploid lines</li>
+                </ul>
+                
+                <div class="single-image-vertical">
+                    <img src="images/tomato.jpg" alt="Dutch tomato greenhouse">
+                </div>
+                <span class="caption lang" data-key="cap_3">Dutch tomato greenhouse.</span>
+
+                <p class="lang" data-key="pb_12">
+                    These observations reinforced my view that rigorous testing is central to pre-breeding, as is collaboration across disciplines. This perspective was further strengthened by joining the course on pre-breeding offered by the Food and Agriculture Organization, which emphasized that the success of a program relies on:
+                </p>
+
+                <ul>
+                    <li class="lang" data-key="li_4">Effective cooperation between genebank managers and breeders</li>
+                    <li class="lang" data-key="li_5">Accurate germplasm characterization, both phenotypic and, when possible, molecular</li>
+                    <li class="lang" data-key="li_6">A long-term vision that often extends beyond short-term objectives</li>
+                </ul>
+                
+                <h2 class="lang" data-key="sub_2">Looking ahead</h2>
+                
+                <p class="lang" data-key="pb_13">
+                    Working in the seed sector means recognizing the seed as a strategic unit. Genetic purity, health, germinability, and stability are not secondary aspects, but essential conditions for grower confidence and for the sustainability of the entire production chain.
+                </p>
+                
+                <p class="lang" data-key="pb_14">
+                    Looking ahead, I am interested in contributing to applied research and pre-breeding contexts where plant physiology, chemistry, and genetics come together. Understanding how plants function, respond to stress, and express genetic potential is, in my view, a necessary step toward making better use of existing biodiversity and translating it into solutions that support resilient cropping systems and, ultimately, global food security.
+                </p>
+                
+                <p class="lang" data-key="pb_15">
+                    My academic path has been shaped by diverse perspectives, which has influenced the way I approach plant sciences: with curiosity, attention to biological complexity, and an interest in connecting different disciplines. I see these elements not as a destination, but as tools to keep learning and to contribute, step by step, to the development of more robust and sustainable agricultural systems.
+                </p>
+            </div>
+
+            <a href="#" class="back-top-btn lang" data-key="back_to_top">↑ Back to Top</a>
+        </article>
+    </div>
+
+    <section id="contact">
+        <div class="contact-box">
+            <h2 class="lang" data-key="contact_title">Let's Connect</h2>
+            <p class="lang" data-key="contact_desc">Open to opportunities in Agricultural Research and Development.</p>
+            <br>
+            <p><strong>Email:</strong> <a href="mailto:veronica.tampieri@gmail.com">veronica.tampieri@gmail.com</a></p>
+            <p style="margin-top: 1rem;"><strong>Follow my work:</strong> 
+                <a href="index.html" style="color: var(--primary-green);">Back to Home</a>
+            </p>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Veronica Tampieri. All articles written with a passion for plants.</p>
+    </footer>
+
+    <script>
+        const translations = {
+            en: {
+                nav_about: "About",
+                nav_blog: "Blog",
+                nav_exp: "Experience",
+                nav_passions: "Passions",
+                nav_contact: "Contact",
+                blog_hero_title: "Plant Science Journal",
+                blog_hero_subtitle: "Personal insights on pre-breeding, physiology, and sustainable systems.",
+                browse_articles: "Browse Articles",
+                jump_to_article: "Read Now ↓",
+                blog_category: "Plant Science • 15 min read",
+                blog_article_title: "Pre-breeding: Transforming Biodiversity into Innovation for Future Crops",
+                blog_article_subtitle: "Bridging genetic resources with commercial breeding for resilient agriculture",
+                back_to_top: "↑ Back to Top",
+                blog_prebreeding_title: "Pre-breeding: Transforming Biodiversity",
+                blog_prebreeding_excerpt: "Where does innovation truly come from? How pre-breeding acts as the essential bridge between genebanks and commercial fields.",
+                blog_upcoming: "Upcoming",
+                blog_next_title: "Seed Systems & Resources",
+                blog_next_excerpt: "The critical role of seed conservation and exchange in building climate-resilient agriculture.",
+                blog_physiology_title: "Physiology in Controlled Env.",
+                blog_physiology_excerpt: "Optimization in greenhouse and vertical farming systems guided by plant physiology.",
+                contact_title: "Let's Connect",
+                contact_desc: "Open to opportunities in Agricultural Research and Development.",
+                
+                // New Article Content Keys
+                pb_1: "In recent years, my academic and personal journey through the horticultural world has often led me to reflect on a seemingly simple question: where does innovation truly come from in crop genetic improvement?",
+                pb_2: "The answer I've found doesn't concern just new technologies or the increasingly sophisticated molecular tools that I have witnessed during the many excursions to breeding companies, but something deeper and more structural: the ability to identify, evaluate, and make usable plant biodiversity, even when it comes from materials that are poorly or not at all adapted.",
+                pb_3: "During my Master's in Plant Sciences at Wageningen University & Research, and as I gradually approached the world of applied research and seed production, I understood how pre-breeding represents a key element of this process. An essential bridge, often not very visible, between genebanks, basic research, and commercial breeding programs, but crucial for crop resilience in the long term.",
+                pb_4: "One of the most valuable aspects of this academic journey was the opportunity to gain insight into all these interconnected activities and to learn how to connect different perspectives. I still vividly remember my visit to the Centre for Genetic Resources in Wageningen as part of the Seed science and technology class, a remarkable heritage of more than 24.000 varieties and wild populations of food crops from all over the world, carefully conserved, characterized and made available to anyone for research.",
+                cap_1: "Visit at the Centre for Genetic Resources at Wageningen University and Research",
+                pb_5: "Equally inspiring were the many conversations with plant breeders from major breeding companies in the Netherlands and Germany. From these discussions I truly realized how the development of new varieties is driven not only by emerging biotic and abiotic stress, but also by the needs of those who stand at the end of the production chain, from people responsible for harvesting and processing to, ultimately, consumers themselves.",
+                sub_1: "Why pre-breeding is strategic today",
+                pb_6: "Genetic improvement is not a linear process. Rather, it is a continuous flow of genetic recombination, selection, and testing that can be suddenly disrupted by the emergence of new biotic pressures, climate-related challenges, or changing market demands.",
+                pb_7: "Through conversations with breeders with many years of experience, one idea has emerged very clearly: years of work focused on optimizing yield, quality, and uniformity can be quickly set aside when a new disease appears, forcing breeding programs to restart from resistant genetic sources that are often initially less competitive from an agronomic perspective.",
+                pb_8: "The introduction of resistance to emerging viruses such as Tomato brown rugose fruit virus (ToBRFV) is a clear example of this dynamic. Today, this pathogen represents a major threat in Dutch glasshouses, requiring strict hygiene protocols and reshaping breeding priorities. In such situations, genetic resistance becomes the primary goal, while productivity and quality are gradually rebuilt through successive cycles of selection and testing.",
+                pb_9: "For this reason, I believe that exploring wild accessions as sources of novel resistance traits is a powerful approach to developing more resilient food crops and strengthening global food security. At the same time, preserving this broad diversity of wild genetic resources is essential to ensure that this variability is not irreversibly lost.",
+                pb_10: "Although my academic background is not rooted in classical breeding but in plant physiology, one of the aspects that fascinates me most is the direct interaction between genetics, environment, and cultivation practices. I still remember one of my first classes in plant physiology in horticulture, when we discussed what a chimera is, how it forms, and how stable it can be: a perfect example of how mutations in specific meristem layers can give rise to beautifully variegated plants, which may occasionally revert their color in order to restore higher chlorophyll content.",
+                cap_2: "Example of variegated Hosta (left) and Actinidia (right) from the Arboretum de Dreijen in Wageningen.",
+                pb_11: "During my internship as a Research Intern at the Delphy Improvement Centre in the Netherlands, I followed several horticultural crops throughout their entire growth cycle, from trial design and crop monitoring to harvest and data analysis. This experience highlighted several key points:",
+                li_1: "The same genotype can express very different phenotypes depending on the environment",
+                li_2: "Complex traits such as yield, vigor, and stress tolerance cannot be evaluated in isolation",
+                li_3: "Repeated testing across different environments remains indispensable, even when working with highly homozygous or double-haploid lines",
+                cap_3: "Dutch tomato greenhouse.",
+                pb_12: "These observations reinforced my view that rigorous testing is central to pre-breeding, as is collaboration across disciplines. This perspective was further strengthened by joining the course on pre-breeding offered by the Food and Agriculture Organization, which emphasized that the success of a program relies on:",
+                li_4: "Effective cooperation between genebank managers and breeders",
+                li_5: "Accurate germplasm characterization, both phenotypic and, when possible, molecular",
+                li_6: "A long-term vision that often extends beyond short-term objectives",
+                sub_2: "Looking ahead",
+                pb_13: "Working in the seed sector means recognizing the seed as a strategic unit. Genetic purity, health, germinability, and stability are not secondary aspects, but essential conditions for grower confidence and for the sustainability of the entire production chain.",
+                pb_14: "Looking ahead, I am interested in contributing to applied research and pre-breeding contexts where plant physiology, chemistry, and genetics come together. Understanding how plants function, respond to stress, and express genetic potential is, in my view, a necessary step toward making better use of existing biodiversity and translating it into solutions that support resilient cropping systems and, ultimately, global food security.",
+                pb_15: "My academic path has been shaped by diverse perspectives, which has influenced the way I approach plant sciences: with curiosity, attention to biological complexity, and an interest in connecting different disciplines. I see these elements not as a destination, but as tools to keep learning and to contribute, step by step, to the development of more robust and sustainable agricultural systems."
+            },
+            it: {
+                nav_about: "Chi Sono",
+                nav_blog: "Blog",
+                nav_exp: "Esperienza",
+                nav_passions: "Passioni",
+                nav_contact: "Contatti",
+                blog_hero_title: "Diario di Scienza Vegetale",
+                blog_hero_subtitle: "Approfondimenti su pre-breeding, fisiologia e sistemi sostenibili.",
+                browse_articles: "Sfoglia Articoli",
+                jump_to_article: "Leggi Ora ↓",
+                blog_category: "Scienza Vegetale • 15 min lettura",
+                blog_article_title: "Pre-breeding: trasformare la biodiversità in innovazione per le colture del futuro",
+                blog_article_subtitle: "Ponte tra risorse genetiche e breeding commerciale per un'agricoltura resiliente",
+                back_to_top: "↑ Torna Su",
+                blog_prebreeding_title: "Pre-breeding: Trasformare la Biodiversità",
+                blog_prebreeding_excerpt: "Da dove nasce l'innovazione? Come il pre-breeding agisce da ponte essenziale tra banche genetiche e campi commerciali.",
+                blog_upcoming: "Prossimamente",
+                blog_next_title: "Sistemi Sementieri",
+                blog_next_excerpt: "Il ruolo cruciale della conservazione e dello scambio di semi per un'agricoltura resiliente.",
+                blog_physiology_title: "Fisiologia in Ambienti Controllati",
+                blog_physiology_excerpt: "Ottimizzazione in serra e vertical farming guidata dalla fisiologia vegetale.",
+                contact_title: "Contattami",
+                contact_desc: "Aperta a opportunità in Ricerca e Sviluppo in ambito agricolo.",
+
+                // New Article Content Keys (Translated)
+                pb_1: "Negli ultimi anni, il mio percorso accademico e personale nel mondo dell'orticoltura mi ha portato spesso a riflettere su una domanda apparentemente semplice: da dove nasce veramente l'innovazione nel miglioramento genetico delle colture?",
+                pb_2: "La risposta che ho trovato non riguarda solo le nuove tecnologie o gli strumenti molecolari sempre più sofisticati di cui sono stata testimone durante le numerose visite alle aziende sementiere, ma qualcosa di più profondo e strutturale: la capacità di identificare, valutare e rendere utilizzabile la biodiversità vegetale, anche quando proviene da materiali scarsamente o per nulla adattati.",
+                pb_3: "Durante il mio Master in Scienze Vegetali presso la Wageningen University & Research, e avvicinandomi gradualmente al mondo della ricerca applicata e della produzione sementiera, ho compreso come il pre-breeding rappresenti un elemento chiave di questo processo. Un ponte essenziale, spesso poco visibile, tra le banche del germoplasma, la ricerca di base e i programmi di breeding commerciale, ma cruciale per la resilienza delle colture a lungo termine.",
+                pb_4: "Uno degli aspetti più preziosi di questo percorso accademico è stata l'opportunità di approfondire tutte queste attività interconnesse e imparare a collegare diverse prospettive. Ricordo ancora vividamente la visita al Centro per le Risorse Genetiche di Wageningen durante il corso di Scienza e tecnologia delle sementi: un patrimonio straordinario di oltre 24.000 varietà e popolazioni selvatiche di colture alimentari provenienti da tutto il mondo, attentamente conservate, caratterizzate e messe a disposizione di chiunque per la ricerca.",
+                cap_1: "Visita al Centro per le Risorse Genetiche della Wageningen University and Research",
+                pb_5: "Altrettanto stimolanti sono state le numerose conversazioni con i breeder delle principali aziende sementiere nei Paesi Bassi e in Germania. Da queste discussioni ho realmente compreso come lo sviluppo di nuove varietà sia guidato non solo dagli stress biotici e abiotici emergenti, ma anche dalle esigenze di chi si trova alla fine della filiera produttiva, dai responsabili della raccolta e trasformazione fino, in ultima analisi, ai consumatori stessi.",
+                sub_1: "Perché il pre-breeding è strategico oggi",
+                pb_6: "Il miglioramento genetico non è un processo lineare. Piuttosto, è un flusso continuo di ricombinazione genetica, selezione e test che può essere improvvisamente interrotto dall'emergere di nuove pressioni biotiche, sfide legate al clima o mutevoli richieste del mercato.",
+                pb_7: "Parlando con breeder con molti anni di esperienza, è emersa chiaramente un'idea: anni di lavoro focalizzati sull'ottimizzazione della resa, della qualità e dell'uniformità possono essere rapidamente accantonati quando appare una nuova malattia, costringendo i programmi di breeding a ripartire da fonti genetiche resistenti che sono spesso inizialmente meno competitive dal punto di vista agronomico.",
+                pb_8: "L'introduzione della resistenza a virus emergenti come il Tomato brown rugose fruit virus (ToBRFV) è un chiaro esempio di questa dinamica. Oggi, questo patogeno rappresenta una minaccia maggiore nelle serre olandesi, richiedendo rigorosi protocolli di igiene e rimodellando le priorità del breeding. In tali situazioni, la resistenza genetica diventa l'obiettivo primario, mentre produttività e qualità vengono gradualmente ricostruite attraverso successivi cicli di selezione e test.",
+                pb_9: "Per questo motivo, credo che esplorare le accessioni selvatiche come fonti di nuovi tratti di resistenza sia un approccio potente per sviluppare colture alimentari più resilienti e rafforzare la sicurezza alimentare globale. Allo stesso tempo, preservare questa ampia diversità di risorse genetiche selvatiche è essenziale per garantire che questa variabilità non vada irrimediabilmente persa.",
+                pb_10: "Sebbene il mio background accademico non sia radicato nel breeding classico ma nella fisiologia vegetale, uno degli aspetti che più mi affascina è l'interazione diretta tra genetica, ambiente e pratiche colturali. Ricordo ancora una delle mie prime lezioni di fisiologia vegetale in orticoltura, quando abbiamo discusso di cosa sia una chimera, come si formi e quanto possa essere stabile: un esempio perfetto di come le mutazioni in specifici strati meristematici possano dare origine a piante magnificamente variegate, che possono occasionalmente revertire il loro colore per ripristinare un contenuto di clorofilla più elevato.",
+                cap_2: "Esempio di Hosta variegata (sinistra) e Actinidia (destra) dall'Arboretum de Dreijen a Wageningen.",
+                pb_11: "Durante il mio tirocinio come Research Intern presso il Delphy Improvement Centre nei Paesi Bassi, ho seguito diverse colture orticole durante il loro intero ciclo di crescita, dalla progettazione del trial e monitoraggio della coltura fino alla raccolta e all'analisi dei dati. Questa esperienza ha evidenziato diversi punti chiave:",
+                li_1: "Lo stesso genotipo può esprimere fenotipi molto diversi a seconda dell'ambiente",
+                li_2: "Tratti complessi come resa, vigore e tolleranza allo stress non possono essere valutati isolatamente",
+                li_3: "Test ripetuti in diversi ambienti rimangono indispensabili, anche quando si lavora con linee altamente omozigoti o doppi aploidi",
+                cap_3: "Serra di pomodori olandese.",
+                pb_12: "Queste osservazioni hanno rafforzato la mia opinione che test rigorosi siano centrali nel pre-breeding, così come la collaborazione tra discipline. Questa prospettiva è stata ulteriormente consolidata partecipando al corso sul pre-breeding offerto dalla FAO, che ha sottolineato come il successo di un programma si basi su:",
+                li_4: "Cooperazione efficace tra gestori delle banche genetiche e breeder",
+                li_5: "Accurata caratterizzazione del germoplasma, sia fenotipica che, quando possibile, molecolare",
+                li_6: "Una visione a lungo termine che spesso si estende oltre gli obiettivi a breve termine",
+                sub_2: "Guardando al futuro",
+                pb_13: "Lavorare nel settore sementiero significa riconoscere il seme come un'unità strategica. Purezza genetica, sanità, germinabilità e stabilità non sono aspetti secondari, ma condizioni essenziali per la fiducia del coltivatore e per la sostenibilità dell'intera filiera produttiva.",
+                pb_14: "Guardando al futuro, sono interessata a contribuire alla ricerca applicata e a contesti di pre-breeding dove fisiologia vegetale, chimica e genetica si incontrano. Comprendere come le piante funzionano, rispondono allo stress ed esprimono il potenziale genetico è, a mio avviso, un passo necessario per fare un uso migliore della biodiversità esistente e tradurla in soluzioni che supportino sistemi colturali resilienti e, in definitiva, la sicurezza alimentare globale.",
+                pb_15: "Il mio percorso accademico è stato plasmato da diverse prospettive, il che ha influenzato il modo in cui mi approccio alle scienze vegetali: con curiosità, attenzione alla complessità biologica e interesse nel collegare diverse discipline. Vedo questi elementi non come una destinazione, ma come strumenti per continuare a imparare e contribuire, passo dopo passo, allo sviluppo di sistemi agricoli più robusti e sostenibili."
+            }
+        };
+
+        function setLanguage(lang) {
+            document.querySelectorAll('.lang').forEach(el => {
+                const key = el.getAttribute('data-key');
+                if (translations[lang][key]) el.textContent = translations[lang][key];
+            });
+            document.querySelectorAll('.lang-switch button').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.lang-switch button[onclick="setLanguage('${lang}')"]`).classList.add('active');
+        }
+    </script>
+</body>
+</html>
